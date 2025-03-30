@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Terminal</title>
+    <link>http://localhost:1313/</link>
+    <description>Recent content on Terminal</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 30 Mar 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>reolink PTZ camera</title>
+      <link>http://localhost:1313/posts/reolink-camera/</link>
+      <pubDate>Sun, 30 Mar 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/reolink-camera/</guid>
+      <description>&lt;p&gt;Grabbed a reolink E1 zoom camera from the Amazon spring sale. Based on what works or doesn&amp;rsquo;t work, and the performance of the stuff that works, I had 2 ideas:&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Adding Fail2Ban to prevent brute force attempts</title>
+      <link>http://localhost:1313/posts/fail2ban-setup/</link>
+      <pubDate>Thu, 30 Jan 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/fail2ban-setup/</guid>
+      <description>&lt;p&gt;Following the &lt;a href=&#34;https://www.digitalocean.com/community/tutorials/how-to-protect-an-nginx-server-with-fail2ban-on-ubuntu-20-04&#34;&gt;guide here&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;p&gt;Tip: In Nano editor, you can do &lt;code&gt;CTRL + w&lt;/code&gt; to open a search. Type what you want and hit enter, profit.&lt;/p&gt;&#xA;&lt;h4 id=&#34;configuring-fail2ban&#34;&gt;Configuring fail2ban&lt;/h4&gt;&#xA;&lt;p&gt;Could see in my nginx logs lots of attempts by bots to access the server. Fortunately with the password protection, these all return 401 errors. But lets add Fail2Ban to prevent brute force attacks.&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;sudo apt update&#xA;sudo apt install fail2ban&#xA;&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    <item>
+      <title>Adding External Wi-Fi antenna to robot - or how to drive in the kitchen</title>
+      <link>http://localhost:1313/posts/external-wi-fi-antenna/</link>
+      <pubDate>Wed, 15 Jan 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/external-wi-fi-antenna/</guid>
+      <description>&lt;p&gt;Github with installation instructions here &lt;a href=&#34;https://github.com/morrownr/8821cu-20210916&#34;&gt;here&lt;/a&gt;, for this &lt;a href=&#34;https://thepihut.com/products/raspberry-pi-dual-band-5ghz-2-4ghz-usb-wifi-adapter-with-antenna&#34;&gt;product&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;p&gt;Install speedtest &lt;a href=&#34;https://www.speedtest.net/apps/cli&#34;&gt;here&lt;/a&gt; and run with &lt;code&gt;speedtest&lt;/code&gt;.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>First attempts with Nav2</title>
+      <link>http://localhost:1313/posts/first-nav2-attempts/</link>
+      <pubDate>Fri, 20 Dec 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/first-nav2-attempts/</guid>
+      <description>&lt;p&gt;Started SLAM from systemd folder script.&#xA;Went to &lt;code&gt;/opt/ros/humble/share/nav2_bringup/params&lt;/code&gt; and made sure costmaps were generated using &lt;code&gt;scan_throttled&lt;/code&gt;. Then ran with &lt;code&gt;ros2 launch nav2_bringup navigation_launch.py&lt;/code&gt; from &lt;a href=&#34;https://docs.nav2.org/tutorials/docs/navigation2_with_slam.html&#34;&gt;here&lt;/a&gt;.&#xA;Can also try &lt;code&gt;ros2 launch nav2_bringup slam_launch.py&lt;/code&gt;.&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;ros2 launch nav2_bringup navigation_launch.py&#xA;&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+  </channel>
+</rss>
