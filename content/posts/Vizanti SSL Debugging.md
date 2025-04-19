@@ -19,7 +19,7 @@ Goes up to around 20% for me with the rosbridge one, for simplicity lets try thi
 
 So according to ChatGPT we can do it just by editing:
 - Nginx config to `nginx_full_https`
-- `<iframe src="https://robotinmattsflat.zapto.org/public/" width="800" height="800" frameborder="0"></iframe>` in `index.html` of signalling server.
+- `<iframe src="https://<url>/public/" width="800" height="800" frameborder="0"></iframe>` in `index.html` of signalling server.
 - `url: (window.location.protocol === "https:" ? "wss://" : "ws://") + this.url + "/ws/"` in `rosbridge.js` of Vizanti.
 - Assuming we also need to edit `rosbridge_script.js` with `wss` instead of `ws`.
 Made the vizanti changes on local copy for reference.
@@ -30,7 +30,7 @@ Edited these files to change Vizanti:
 
 So with the 8443 config and auth turned off, the following works: [websocat](https://github.com/vi/websocat/releases)
 ```
-openvpnas@ip-172-31-24-241:~$ sudo ./websocat_max.x86_64-unknown-linux-musl wss://robotinmattsflat.zapto.org:8443/ws/
+openvpnas@<ec2-ip>:~$ sudo ./websocat_max.x86_64-unknown-linux-musl wss://<url>:8443/ws/
 ```
 Which suggests the conversion from `ws` to `wss` is ok right?
 Defo something to check here, see if you can somehow send messages.
@@ -43,7 +43,7 @@ Remember you have to remove auth from nginx for testing with websocat.
 
 First problem found, you need 8443 here:
 ```
-<iframe src="https://robotinmattsflat.zapto.org/public/" width="800" height="800" frameborder="0"></iframe>
+<iframe src="https://<url>/public/" width="800" height="800" frameborder="0"></iframe>
 ```
 Basically the issues may all be because you use 8443 not 443 which is default. Maybe can change the OpenVPN server to use another port instead.
 
@@ -60,7 +60,7 @@ url.innerText = "Bridge URL: wss://"+rosbridge.url + ":"+rosbridge.port;
 ```
 `index.html`
 ```
-<iframe src="https://robotinmattsflat.zapto.org:8443/public/" width="800" height="800" frameborder="0"></iframe>
+<iframe src="https://<url>:8443/public/" width="800" height="800" frameborder="0"></iframe>
 ```
 Add the nginx config called `nginx_working_https`.
 `nginx` and `index.js` require the same port number.

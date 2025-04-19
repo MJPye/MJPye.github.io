@@ -158,7 +158,7 @@ All we had to edit was `config.json` with the following:
     "f29c576b-bbfb-449a-be5a-180fd0a7bedc": {
       "channels": {
         "0": {
-          "url": "rstp://192.168.0.188:8554/test"
+          "url": "rstp://<rpi-ip>:8554/test"
         }
       },
       "name": "robot_feed_rpi"

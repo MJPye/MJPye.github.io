@@ -6,7 +6,7 @@ date: 2025-03-10
 Had an ongoing issue with the robot where `ros2 topic list` shows only 2 topics, when I did `usb0` interface down then up it would sometimes help, sometimes not.
 The error can be seen in the create3 logs in the web interface:
 ```
-D5F21199B82B4396AA26B988C6BD94E2 user.notice create-platform: 1742579888.164076 [0] tev: ddsi_udp_conn_write to udp/239.255.0.1:7400 failed with retcode -1
+user.notice create-platform: 1742579888.164076 [0] tev: ddsi_udp_conn_write to udp/239.255.0.1:7400 failed with retcode -1
 ```
 This suggests that **ROS 2's DDS (Data Distribution Service) communication is failing**.
 The address **239.255.0.1:7400** is a multicast address used by DDS for discovery and communication.

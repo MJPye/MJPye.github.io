@@ -10,7 +10,7 @@ Changed Default TCP Port number:
 - Was 443, now 4443.
 To access the Admin panel, you now must go to port 943 directly:
 ```
-https://robotinmattsflat.zapto.org:943/admin/
+https://<url>:943/admin/
 ```
 
 #### Making Robot stuff appear on 443 (default HTTPS)

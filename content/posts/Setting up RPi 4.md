@@ -140,7 +140,7 @@ autoconnect=false
 
 [ipv4]
 method=manual
-addresses=192.168.186.3/24
+addresses=<robot-ip>/24
 never-default=true
 
 [ipv6]

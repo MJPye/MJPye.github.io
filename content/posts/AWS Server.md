@@ -1,16 +1,21 @@
+---
+title: AWS Server setup
+date: 2024-09-22
+---
 #### OpenVPN Access Server
 I have created a launch template from my running AWS OpenVPN Access Server.
 The existing server is based on the following ami: https://eu-central-1.console.aws.amazon.com/ec2/home?region=eu-central-1#ImageDetails:imageId=ami-039470c0765f439c4
 
 We run this on a t2.micro instance. The OpenVPN server setup was done using the GUI provided when logging into the server. I must admit, I have forgotten how I did this, so will try to access it again and do a dump of the settings.
+<!--more-->
 
 Some backups:
 I have created a folder on the mac called AWS_Setup which contains:
 - A backup of the OpenVPN Access server.
 	- Made with `sudo tar -czvf openvpn-as-backup.tar.gz /usr/local/openvpn_as/`
 - The connection profiles.
-	- Laptop: `profile-3674212535790778026.ovpn`
-	- RPi: `profile-5072818884292860035.ovpn`
+	- Laptop: `profile-36xxxxx26.ovpn`
+	- RPi: `profile-50xxxxx35.ovpn`
 I am not certain these backups will work, but it is enough for me now to try setting up the reverse proxy.
 
 #### Nginx Reverse Proxy Setup
@@ -22,32 +27,32 @@ sudo service openvpnas stop
 ```
 sudo apt update
 sudo apt install nginx
-sudo certbot --nginx -d robotinmattsflat.zapto.org
+sudo certbot --nginx -d <url>
 ```
 
 Response when getting certificate
 Failed the first time but worked when I opened port 80.
 ```
-Requesting a certificate for robotinmattsflat.zapto.org
+Requesting a certificate for <url>
 
 Successfully received certificate.
-Certificate is saved at: /etc/letsencrypt/live/robotinmattsflat.zapto.org/fullchain.pem
-Key is saved at:         /etc/letsencrypt/live/robotinmattsflat.zapto.org/privkey.pem
+Certificate is saved at: /etc/letsencrypt/live/<url>/fullchain.pem
+Key is saved at:         /etc/letsencrypt/live/<url>/privkey.pem
 This certificate expires on 2025-01-13.
 These files will be updated when the certificate renews.
 Certbot has set up a scheduled task to automatically renew this certificate in the background.
 
 Deploying certificate
-Successfully deployed certificate for robotinmattsflat.zapto.org to /etc/nginx/sites-enabled/default
-Congratulations! You have successfully enabled HTTPS on https://robotinmattsflat.zapto.org
+Successfully deployed certificate for <url> to /etc/nginx/sites-enabled/default
+Congratulations! You have successfully enabled HTTPS on https://<url>
 ```
 
 So now we have certificates, lets create a username and password.
 ```
 sudo apt-get install apache2-utils
-sudo htpasswd -c /etc/nginx/.htpasswd robot_time
+sudo htpasswd -c /etc/nginx/.htpasswd <username>
 ```
-Which creates user `robot_time` with usual password.
+Which creates user `<username>` with usual password.
 If you want to create more users in the future, do so like this:
 ```
 sudo htpasswd /etc/nginx/.htpasswd another_username
@@ -57,17 +62,17 @@ I then added the following to replace the existing default nginx config, tested 
 ```
 server {
     listen 8443 ssl;
-    server_name robotinmattsflat.zapto.org;
+    server_name <url>;
 
-    ssl_certificate /etc/letsencrypt/live/robotinmattsflat.zapto.org/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/robotinmattsflat.zapto.org/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/<url>/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/<url>/privkey.pem;
 
     # Enable Basic Authentication
     auth_basic "Restricted Content";
     auth_basic_user_file /etc/nginx/.htpasswd;
 
     location / {
-        proxy_pass http://172.27.1.3:8040;
+        proxy_pass http://<rpi-vpn-ip>:8040;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -83,7 +88,7 @@ sudo service openvpnas start
 ### Hostname
 Created the following hostname using No-IP:
 ```
-robotinmattsflat.zapto.org:8443
+<url>:8443
 ```
 With the HTTPS setup from earlier, we should access on port 8443, which should prompt for user and password.
 
@@ -102,17 +107,17 @@ Changed nginx conf to try and see Vizanti, change back to one above if broken.
 ```
 server {
     listen 8443 ssl;
-    server_name robotinmattsflat.zapto.org;
+    server_name <url>;
 
-    ssl_certificate /etc/letsencrypt/live/robotinmattsflat.zapto.org/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/robotinmattsflat.zapto.org/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/<url>/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/<url>/privkey.pem;
 
     # Enable Basic Authentication
     auth_basic "Restricted Content";
     auth_basic_user_file /etc/nginx/.htpasswd;
 
     location / {
-        proxy_pass http://172.27.1.3:8040;
+        proxy_pass http://<rpi-vpn-ip>:8040;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -120,7 +125,7 @@ server {
     }
 
     location /iframe-content/ {
-        proxy_pass http://172.27.1.3:5000;
+        proxy_pass http://<rpi-vpn-ip>:5000;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -137,11 +142,11 @@ I can see the dashboard when using HTTP using this nginx config and visiting por
 ```
 server {
     listen 80;
-    server_name robotinmattsflat.zapto.org;
+    server_name <url>;
 
     # HTTP traffic (main viewer)
     location / {
-        proxy_pass http://172.27.1.3:5000;
+        proxy_pass http://<rpi-vpn-ip>:5000;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -149,7 +154,7 @@ server {
     }
 
     location /ws/ {
-        proxy_pass http://172.27.1.3:5001;
+        proxy_pass http://<rpi-vpn-ip>:5001;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
@@ -179,7 +184,7 @@ Now there is a problem serving the files from flask, added to `server.py` on lin
 
 Ok fixed the path for flask, now can view with:
 ```
-http://robotinmattsflat.zapto.org/public/
+http://<url>/public/
 ```
 Run like this to get there:
 ```
@@ -187,7 +192,7 @@ ros2 launch vizanti_server vizanti_rws.launch.py base_url:=/public
 ```
 Changed this line to use http instead of https:
 ```
-<iframe src="http://robotinmattsflat.zapto.org/public/" width="1200" height="1000" frameborder="0"></iframe>
+<iframe src="http://<url>/public/" width="1200" height="1000" frameborder="0"></iframe>
 ```
 
 Also cleanup here:
