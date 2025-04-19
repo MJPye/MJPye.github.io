@@ -9,7 +9,7 @@ Grabbed a reolink E1 zoom camera from the Amazon spring sale. Based on what work
 	- Can't get the responsiveness (low stream lag) needed for driving, the current webcam stream is very responsive.
 	- 5V/2A power requirement is too much and drains current robot battery.
 
-![[reolink_e1_zoom.png]]
+![Image Description](/images/reolink_e1_zoom.png)
 
 Setup the reolink camera using app on smartphone, with Credentials set for the admin account on the device. Instructions [here](https://support.reolink.com/hc/en-us/articles/360007010473-How-to-Live-View-Reolink-Cameras-via-VLC-Media-Player/) for the RTSP stream and VLC. Could instantly get a stream on VLC on laptop like so:
 ```

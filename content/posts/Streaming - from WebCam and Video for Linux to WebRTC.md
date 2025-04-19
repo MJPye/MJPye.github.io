@@ -128,7 +128,7 @@ RTSPtoWeb$ GO111MODULE=on go run *.go
 You should get a fairly responsive WebRTC stream that doesn't cut out much.
 Got the answer from here: https://github.com/centricular/gstwebrtc-demos/blob/e4b86bc4f151e35222aff1bf7e46cec016e7b0ee/sendonly/webrtc-unidirectional-h264.c#L181C1-L183C66
 
-![[WebRTC_session_description.png]]
+![Image Description](/images/WebRTC_session_description.png)
 
 Have setup screens to do the following:
 - signalling-server: go to `~/webcam_testing/signalling-server` and run `node index.js`.
