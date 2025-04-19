@@ -56,7 +56,7 @@ sudo iptables -S | grep f2b
 ```
 For example when I purposely got my password wrong on my phone:
 ```
--A f2b-nginx-http-auth -s 109.40.240.245/32 -j REJECT --reject-with icmp-port-unreachable
+-A f2b-nginx-http-auth -s <phone_IP>/32 -j REJECT --reject-with icmp-port-unreachable
 ```
 #### Unbanning
 And then to unban, just do this:

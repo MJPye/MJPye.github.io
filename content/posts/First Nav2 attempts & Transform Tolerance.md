@@ -1,5 +1,5 @@
 ---
-title: First attempts with Nav2
+title: First Nav2 attempts & Transform Tolerance
 date: 2024-12-20
 ---
 Started SLAM from systemd folder script.
@@ -20,5 +20,5 @@ Try navigating to goal again, try changing all instances in the params file of `
 A guide to [ROS2 Navigation tuning](https://automaticaddison.com/ros-2-navigation-tuning-guide-nav2/#slam_toolbox).
 
 First, check about synchronising the clock between robot base and Rpi, might be affecting transforms. <- Doesn't seem to be that just by checking if `ntp` is working.
-
+### Transform Tolerance 
 Looking at the `frames.pdf` output, we see `map -> odom` is only published at 1.1Hz. This is likely the issue. Find who is publishing this. For now try increasing the value of `transform_tolerance` to check if Nav goal actually works. Got from this [forum post](https://answers.ros.org/question/344688/). <- Increased `transform tolerance`, helped for sure, not a long term solution though.

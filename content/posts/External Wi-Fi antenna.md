@@ -116,6 +116,3 @@ We can keep both connections running on `wlan0` and `wlx1cbfce2684be`, they just
 Tested this and when the antenna is disconnected, that connection goes down, and `wlan0` takes over.
 Antenna connection is currently set to `192.168.0.197`.
 The VPN on `tun0` goes through the default route, so as long as one connection is active the VPN stays online.
-
-To-Do:
-- Test with a USB3 female to male cable when it is delivered.
