@@ -1,6 +1,6 @@
 baseURL = 'https://mjpye.github.io'
 languageCode = 'en-us'
-title = 'mjpye site'
+title = 'mjpye'
 theme = 'maverick'
 
 [permalinks]
@@ -26,7 +26,7 @@ theme = 'maverick'
     weight = "-110"
   [[menu.main]]
     identifier = "posts"
-    name = "Post"
+    name = "Posts"
     url = "/posts/"
     weight = -200
 
