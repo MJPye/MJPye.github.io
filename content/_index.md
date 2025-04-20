@@ -1,7 +1,5 @@
 # Hi
 
-<img class="avatar" src="images/marie_cruz.jpg" alt="Marie Cruz headshot">
-
 I'm Matt, an engineer currently living in Berlin.
 
 For the last 5 years, I've worked in tech startups, mostly on Robotics, but also a lot of Linux and Automation/Infrastructure 🤖
