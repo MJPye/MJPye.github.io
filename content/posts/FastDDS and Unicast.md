@@ -23,3 +23,6 @@ Also added the following to `.bashrc` on the raspberry pi so nodes on the pi can
 export ROS_DISCOVERY_SERVER=<rpi_ip>:11811
 ```
 Have been running the robot for multiple weeks and `ros2 topic list` continuously provides the desired output.
+
+### Permanent Fix
+Have added this to the `robot-sleep` bash script. So far to me it seems this works best if ran before `usb0` is even brought up.
