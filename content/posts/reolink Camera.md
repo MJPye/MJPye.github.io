@@ -83,3 +83,74 @@ Next steps are to:
 - Order another camera power adapter from Amazon which I can modify to connect to the 5V DC converter board I will connect to the Robot's 12V output. Then we can mount the camera to the robot and see how well it is powered, and the impact on battery life.
 - Add another panel to the UI for viewing the streams of this camera, as well as creating the WebRTC stream.
 - Add UI controls for PTZ functionality.
+
+
+### Testing Reolink camera powered by Robot battery
+Seems I missed the part of the Create 3 docs where is says the 5V 3A power for the raspberry pi shares the same Battery Voltage x 2A power as the unregulated port. 
+
+I attached a Step Down voltage converter in between the Robot's unregulated power output and the Reolink camera. The Voltage converter provides the needed 5V input. The Reolink manual and supplied power adapter suggest 2A, so far when moving the camera I see a current consumption of around 1A, so 5V 1A.
+
+On the input side of the Voltage converter, I need to monitor the power consumption. At 16V input I see current consumption up to 0.8 A.
+
+Power P = VI,
+Input: 16 x 0.8 = 12.8 W
+Output: 5 x 1 = 5 W
+5 / 12.8 x 100 = 39% efficiency.
+
+Fair to assume as battery voltage drops, input current will increase.
+
+Going to get a USB-C splitter for this, and first see if the reolink camera and RPi with all components can just be run from the 5V 3A supply.
+
+Camera max: 5V 1A so far.
+
+### Testing with every component connected
+With:
+- Reolink camera running through voltage regulator.
+- LiDAR running
+- RPi with all screens running
+- Webcam running
+Everything worked and the output from the battery is like below.
+
+```
+---
+header:
+  stamp:
+    sec: 1745875763
+    nanosec: 719883127
+  frame_id: ''
+voltage: 14.409000396728516
+temperature: 31.44999885559082
+current: -0.9549999833106995
+charge: 0.36000001430511475
+capacity: 1.2510000467300415
+design_capacity: 1.2510000467300415
+percentage: 0.28999999165534973
+power_supply_status: 0
+power_supply_health: 0
+power_supply_technology: 0
+present: true
+cell_voltage: []
+cell_temperature: []
+location: ''
+serial_number: ''
+```
+
+
+0.25 A at 14.4V was the difference when I turned off the Reolink.
+
+0.53A at 14.3V when the Rpi is on but nothing running.
+
+Is it possible I was reading input current on the LCD display? Can try to long press the button, because 14.4V and 0.25A don't match what I saw. According to [msg](https://docs.ros.org/en/melodic/api/sensor_msgs/html/msg/BatteryState.html) definition it should be in Amps.
+- Plug the DC-DC converted back in with the camera and check if pressing the button changes the current value. - Do this next!
+
+### Options:
+- Reolink is in the room, connected to Wi-Fi, controlled ON/OFF by a smart plug.
+- Reolink is attached to the robot using step down converter, can get a relay to power it ON/OFF and control with RPI GPIO. <- Relay consumes too much current from RPi.
+	- Do we use the WebCam still or not? Need to see if Reolink can give a responsive stream.
+Looks like we can get rid of the webcam so far.
+
+Next hardware step to test:
+- Plug the voltage regulator into 5V input power.
+- Measure voltage across button.
+- Do the same with robot battery voltage.
+- Can we replicate that with RPi GPIOs?
