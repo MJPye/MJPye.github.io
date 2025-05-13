@@ -84,3 +84,75 @@ This configuration can be found in the beta features of the Create3 web interfac
   </Domain>
 </CycloneDDS>
 ```
+
+### usb0 interface
+Was having trouble with the usb0 interface not activating on boot. Tried some different options in the connection profile, but in the end just made a quick `systemd` service to bring it up if it is down.
+##### check-usb0.timer - this is the part you enable
+```
+[Unit]
+Description=Run usb0 nmcli check every minute, starting 1 minute after boot
+
+[Timer]
+OnBootSec=60s
+OnUnitActiveSec=60s
+Persistent=true
+Unit=check-usb0.service
+
+[Install]
+WantedBy=timers.target
+```
+
+##### check-usb0.service
+```
+[Unit]
+Description=Check and bring up usb0 via nmcli if down
+Wants=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/home/rpi/systemd-services/check-usb0.sh
+```
+
+##### check-usb0.sh - stored in `/home/rpi/systemd-services`
+```
+#!/bin/bash
+
+# Set up logging
+LOG_TAG="check-usb0"
+
+# Check if usb0 connection exists
+if nmcli connection show usb0 &>/dev/null; then
+    echo "usb0 connection exists" | systemd-cat -t "$LOG_TAG"
+
+    # Check if usb0 is connected
+    if nmcli -t -f NAME,DEVICE connection show --active | grep -q '^usb0:'; then
+        echo "usb0 is connected" | systemd-cat -t "$LOG_TAG"
+    else
+        echo "usb0 exists but is not connected. Attempting to bring it up..." | systemd-cat -t "$LOG_TAG"
+        if nmcli connection up usb0; then
+            echo "Successfully brought up usb0 connection" | systemd-cat -t "$LOG_TAG"
+        else
+            echo "Failed to bring up usb0 connection" | systemd-cat -t "$LOG_TAG"
+        fi
+    fi
+else
+    echo "usb0 connection does not exist" | systemd-cat -t "$LOG_TAG"
+fi
+```
+
+### Restarting Create3 application with API
+The buttons in the WebServer don't work due to a text alignment issue, but you can trigger an application restart from the Raspberry Pi like so:
+```
+curl -X POST http://192.168.186.2/api/restart-app
+```
+
+Should respond like so if successful, and the chime from the robot or WebServer logs show the restart:
+```
+{"status":"Restarting application."}
+```
+#### To-Do
+When usb0 is down for too long, the create3 still has those strange multicasting errors. Need to try with Multicast set to false from the create3. <- That should not work.
+
+Maybe can try with peers listed again, but I hate this.
+Can't assume usb0 will always be up, create3 could bomb out with multicast at any time it seems.
+
