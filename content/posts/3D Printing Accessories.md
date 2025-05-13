@@ -15,8 +15,3 @@ The create 3 robot comes with mounting holes on the top in a 12mm grid and "3mm"
 When printing accessories, I print with holes of 3.5mm diameter and use various M3 Screws, Nuts and Washers to assemble.
 
 ### 3D printing RPLidar C1 holder
-Below is the gif
-<img src="/images/robot_gif.gif" alt="GIF" loading="lazy" style="max-width: 100%;">
-
-below is the webm
-<video src="/images/robot_webm.webm" autoplay loop muted playsinline style="max-width: 100%;" controls></video>
