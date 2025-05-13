@@ -6,12 +6,26 @@ In 2024 I bought a [Bambu Lab A1 mini](https://eu.store.bambulab.com/de/products
 
 The printer was bought for other purposes, but it has been useful for printing accessories and mounts for the Create 3 robot. There is a library of mounts in the [Create 3 Docs](https://iroboteducation.github.io/create3_docs/hw/print_sensor_mounts/), but not for the devices I am using.
 
-The faceplate and internal cargo bay of the Create 3 robot feature a 12mm grid of "3mm diameter" mounting holes, though I believe they are more like 3.2mm.
+The faceplate and internal cargo bay of the Create 3 robot feature a **12mm grid of "3mm diameter"** mounting holes, though I believe they are more like 3.2mm.
 
 ![Image Description](/images/create3_payload_surfaces.svg)
 
-### 3D printing Reolink camera holder
-The create 3 robot comes with mounting holes on the top in a 12mm grid and "3mm" holes, though I believe they are actually slightly larger.
-When printing accessories, I print with holes of 3.5mm diameter and use various M3 Screws, Nuts and Washers to assemble.
+### LiDAR holder
+The first part to print for the robot was a mount for an [RPLidar C1](https://www.slamtec.com/en/C1). This was just a holder with a wall missing on one side for cables.
 
-### 3D printing RPLidar C1 holder
+![Image Description](/images/LiDAR_holder.png)
+
+
+### Reolink camera holder
+The [Reolink E1 zoom](https://reolink.com/de/product/e1-zoom/?srsltid=AfmBOookvPFs8GD6HHeOGWlzj1j_C8yrEwrdLXJuJ7Y9oRyJAvPvJMB7) has a mounting plate included in the packaging which screws onto the bottom. The mounting plate has 2 x 4mm holes 18mm apart, which are in the centre of the holder in a 0.5mm recess.
+<video src="/images/reolink_holder_slicer.mov" autoplay muted loop playsinline style="max-width:100%; height:auto;"></video>
+To add space underneath the Reolink mount, I printed some plastic shims also, around 15mm. This allows the cable for the RPLidar to run underneath them. 
+
+### Assembled Robot
+With the antenna attached to the top of the robot and some flexible Ethernet cables for wiring, the robot assembly is for now complete 🦾.
+After months with a webcam on a stand and cables filling the cargo bay, the robot is now looking clean and I can go back to working on software. 
+Next up, Reolink camera controls in the UI.
+
+![Image Description](/images/assembled_robot.jpg)
+
+P.S The camera is blocking around 20% of the LiDAR's field of view, will find a solution for this later.
