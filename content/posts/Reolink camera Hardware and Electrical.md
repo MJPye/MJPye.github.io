@@ -1,5 +1,5 @@
 ---
-title: reolink PTZ camera
+title: Reolink PTZ camera Hardware and Electrical
 date: 2025-03-30
 ---
 Grabbed a reolink E1 zoom camera from the Amazon spring sale. Based on what works or doesn't work, and the performance of the stuff that works, I had 2 ideas:

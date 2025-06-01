@@ -20,6 +20,21 @@ Values we publish in ROS2:
 ```
 ros2 topic pub /joy sensor_msgs/msg/Joy "{axes: [0.0, -0.1, 0.0, 0.0, 0.0, 0.0], buttons: [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}"
 ```
+
+### Gamepad control policy - when do we send commands?
+Here's a simple summary of how joy commands are sent:
+**When commands are sent:**
+1. Every time a button is pressed (any button value > 0)
+2. One time when all buttons are released (sends all zeros)
+3. When the gamepad disconnects (sends all zeros)
+4. When the connection is closed (sends all zeros)
+
+**When commands are NOT sent:**
+1. When no buttons are pressed and the last state was also no buttons pressed
+2. When only stick/axis values change (unless a button is also pressed)
+
+This ensures responsive control when needed while minimising unnecessary network traffic. So we don't spam empty arrays.
+
 ### Button mapping
 Mapping in the browser:
 gamepad.buttons is an array from javascript.
@@ -70,7 +85,8 @@ javascript
 3: RIGHTY (value of 1 is down, value of -1 is up)
 ```
 
-For the ROS2 node they added trigger values in 4,5
+For the ROS2 node they **added trigger values in 4,5**, but the values are floats based on how much the trigger is pushed.
+Added the **LT** and **RT** buttons in [this commit](https://github.com/MJPye/robot_with_webrtc/commit/4194405892c1f2e5703025d4820059d25ec8a07e).
 #### Keypad Controls
 
 From gamepad, we hold the right bumper:

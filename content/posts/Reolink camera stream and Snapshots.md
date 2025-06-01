@@ -1,6 +1,6 @@
 ---
-title: Reolink camera streaming
-date: 2025-05-03
+title: Reolink camera streaming and Snapshots
+date: 2025-05-24
 ---
 ### Setting up ETH0 interface between camera and RPi
 With the Reolink camera connected to my MacBook or over Wi-Fi, I found the streams had some latency. Going to try changing settings to see if we can improve this.
@@ -60,3 +60,4 @@ We can also take snapshots from the command line as follows, they are of the hig
 ```
 curl -o snapshot.jpg "http://192.168.50.2/cgi-bin/api.cgi?cmd=Snap&channel=0&rs=wuuPhkmUCeI9WG7C&user=admin&password=password"
 ```
+
