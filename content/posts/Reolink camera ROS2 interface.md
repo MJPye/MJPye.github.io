@@ -5,6 +5,7 @@ date: 2025-05-25
 ## ROS2 interface
 There is a package which defines actions for a PTZ camera, so a generic interface which I should use. [ptz_action_server](https://github.com/clearpathrobotics/ptz_action_server/tree/ros2).
 It doesn't include a driver for working with my E1 zoom camera though from what I see, so I should use this package: [reolinkapipy](https://github.com/ReolinkCameraAPI/reolinkapipy/tree/master)
+<!--more-->
 ##### ONVIF - not used
 Tried this [ONVIF python package](https://github.com/FalkTannhaeuser/python-onvif-zeep/tree/zeep) and it works, but gives nothing over the Python on in terms of absolute position. This is because the PTZ doesn't seem to be capable. Remember you have to enable ONVIF in reolink app.
 ```

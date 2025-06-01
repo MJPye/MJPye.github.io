@@ -5,7 +5,7 @@ date: 2025-05-22
 ### Issue with CPU usage spike
 ##### What is the issue?
 When I am running the server with "node index.js" and access it, I click "start data" button and everything works. htop on the computer the server runs on shows 10% use on each CPU core, so all good. I click "start video", the stream looks fine and CPU cores are also fine. After 10 seconds or so, one of the CPUs maxes out at 100% and stays there permanently.
-
+<!--more-->
 **The issue actually comes from the webrtc-to-ros2 node**
 and it happens without even starting the rtsp screens.
 Happens after pressing "start data" at some point. Break down `index.js` in `webrtc-to-ros2` to figure this out.

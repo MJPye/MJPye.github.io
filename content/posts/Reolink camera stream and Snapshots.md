@@ -4,6 +4,7 @@ date: 2025-05-24
 ---
 ### Setting up ETH0 interface between camera and RPi
 With the Reolink camera connected to my MacBook or over Wi-Fi, I found the streams had some latency. Going to try changing settings to see if we can improve this.
+<!--more-->
 
 First a connection profile for the `eth0` interface, which hands out the IP address `192.168.50.2`:
 ```
