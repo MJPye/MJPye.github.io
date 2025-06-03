@@ -53,6 +53,14 @@ To use left bumper to trigger looking around:
 sensor_msgs.msg.Joy(header=std_msgs.msg.Header(stamp=builtin_interfaces.msg.Time(sec=0, nanosec=0), frame_id=''), axes=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0], buttons=[0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 ```
 
+When you have Python dependencies for the ROS2 package add them to the `setup.py` file like so:
+```
+install_requires=[
+	'setuptools',
+	'reolinkapi>=0.1.5',
+	'pyyaml',
+	],
+```
 #### rclnodejs adding times to messages
 Sometimes it is necessary to have timestamps on the messages to check we are not acting on old information. Here is how to add it, and the full example is in the`webrtc-to-ros2` node:
 ```
@@ -69,3 +77,28 @@ const joyMessage = {
 ```
 
 Have added `Joy` message processing logic to `reolink_cam_ros2_node.py`, now just need to actually call the reolink API inside functions like `reolink_move_callback`.
+
+### How does the node work
+We connect to the camera using `reolinkapi` and a `reolink_camera.yaml` config file with IP, Username and Password.
+
+So we listen to `Joy` commands on the `Joy` topic, and depending on the value of sticks and buttons (only when LB is pressed), we publish to some other topics.
+```
+/Joy >> /reolink_cam/ptz/move OR zoom OR focus
+```
+
+These topics have callbacks which call the `reolinkapi` with commands like:
+```
+self.reolink_ptz.move_left(20)
+```
+
+These commands run forever until preempted by:
+```
+self.reolink_ptz.stop_ptz()
+```
+
+We preempt whenever:
+- LB is not pressed
+- RB is pressed
+- No conditions for move, zoom or focus are met
+
+We only send the `stop` command once, just like we only send each move/zoom/focus commands once. We do this by checking what the last sent message was.
