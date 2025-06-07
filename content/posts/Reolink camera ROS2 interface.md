@@ -31,7 +31,7 @@ cd /home/rpi/ros2_ws/src
 ros2 pkg create --build-type ament_python --node-name reolink_cam_ros2_node reolink_cam_ros2
 
 cd /home/rpi/ros2_ws
-colcon build
+colcon build --packages-select reolink_cam_ros2
 ```
 Then to test it worked try running.
 ```
@@ -102,3 +102,45 @@ We preempt whenever:
 - No conditions for move, zoom or focus are met
 
 We only send the `stop` command once, just like we only send each move/zoom/focus commands once. We do this by checking what the last sent message was.
+
+### reolinkapi and Python version
+`get_ptz_presets()` is failing as it is not included in the current versions I have installed.
+```
+reolinkapi==0.1.5
+python3==3.10.12
+```
+Therefore we need `reolinkapi==0.4.1` but that requires:
+```
+python==3.12.4
+```
+
+Made a pull request to fix the broken `add_preset` function [here](https://github.com/ReolinkCameraAPI/reolinkapipy/pull/94)
+
+Testing from MacBook with latest version of `reolinkapi`. Edit files here to see changes:
+```
+/Users/matthewpye/Documents/reolink_api_testing/venv/lib/python3.12/site-packages/reolinkapi/mixins
+```
+Already tried moving to presets and setting presets from the MacBook and it works. Get the hang of that then test it from the robot instead.
+
+##### Testing changed file on rpi
+Maybe I can just replace the `ptz.py` file with the new one `0.4.1` and it works on the rpi.
+Made `mp_archive` here then replaced with 0.4.1 to test:
+```
+/home/rpi/.local/lib/python3.10/site-packages/reolinkapi/mixins
+```
+
+Testing and it actually seems like we can just force Pip to not care about the python version requirement by installing like this:
+```
+pip3 install --ignore-requires-python reolinkapi==0.4.1
+```
+
+So the only problem now is that `reolinkapi==0.4.1` has the bug where when you call:
+```
+response = self.reolink_ptz.add_preset(2, "Left")
+```
+It fails because of the missing parameter that should be fixed in the Pull request. For now I will edit the file manually. So the file located here is fixed on my rpi:
+```
+/home/rpi/.local/lib/python3.10/site-packages/reolinkapi/mixins/ptz.py
+```
+
+**Note**: Just pay attention to the PTZ. It seemed to turn off once today and re-calibrate. Maybe was drawing too much current and the Step down converter max current needs to be adjusted.
