@@ -12,3 +12,11 @@ The Robot can also navigate the apartment on it's own!
 
 Find me on: [LinkedIn](https://www.linkedin.com/in/matthew-pye1/)
 
+### Demo of the robot in action
+
+In the video, you can see my driving the robot around manually using an xbox controller.
+
+Once the Robot has mapped it's surroundings, we can sent it autonomously to a goal position.
+
+<video src="/images/robot_nav_goal_demo.mov" autoplay muted loop playsinline style="max-width:100%; height:auto;"></video>
+
