@@ -92,3 +92,80 @@ But this data isn't anything special. Could use CloudFront if it needed to be mo
     ]
 }
 ```
+
+### Issue with rclnodejs subscribing to create3 topics
+When I tried to subscribe to some create3 topics from `rclnodejs`, the data was not being received. Could see the following:
+- `rclnodejs` debug logs showed we were subscribed to the topic.
+- Data published from `cli` appears in `rclnodejs`.
+- Data showing up in `cli` like normal.
+Issue became clear when I did:
+```
+ros2 run topic_tools relay /battery_state /battery_state_relayed
+
+[WARN] [1750973330.540706563] [relay]: New subscription discovered on topic '/battery_state_relayed', requesting incompatible QoS. No messages will be sent to it. Last incompatible policy: RELIABILITY_QOS_POLICY
+```
+So using a relay is a good tool to get the errors that you can't see from the robot. It was all to do with the QoS policy. Turns out, in `rclnodejs` whenever I tried to create a QoS object, it just wasn't being used. This difference below shows it:
+```
+rpi@rpi-desktop:~/systemd-services/testing-sleep-wake$ ros2 topic info /imu --verbose
+Type: sensor_msgs/msg/Imu
+
+Publisher count: 1
+
+Node name: robot_state
+Node namespace: /
+Topic type: sensor_msgs/msg/Imu
+Endpoint type: PUBLISHER
+GID: 01.10.63.38.98.98.b0.9b.de.98.16.32.00.01.1f.03.00.00.00.00.00.00.00.00
+QoS profile:
+  Reliability: BEST_EFFORT
+  History (Depth): KEEP_LAST (1)
+  Durability: VOLATILE
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+
+Subscription count: 1
+
+Node name: webrtc_to_ros2_node
+Node namespace: /
+Topic type: sensor_msgs/msg/Imu
+Endpoint type: SUBSCRIPTION
+GID: 01.10.7b.54.4e.73.a4.5e.7a.2d.9f.1f.00.00.14.04.00.00.00.00.00.00.00.00
+QoS profile:
+  Reliability: RELIABLE
+  History (Depth): KEEP_LAST (10)
+  Durability: VOLATILE
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+```
+
+And **the solution**, if you need a specific QoS, don't create the object yourself but use one of the predefined ones:
+```
+{ qos: rclnodejs.QoS.profileSensorData }
+```
+
+As a result of this, now the `battery_state` is read from the `create3`, `rclnodejs` subscribes to it and publishes it on the WebRTC data channel. Voltage is now printed in the console of the browser. This means we are ready to display robot feedback in the UI more.
+
+#### Splitting the wireframe into colours
+The Wireframe array has length 35, with components corresponding to the following indexes:
+- wireframe[33:34] = reolink sphere and cylinder base
+- wireframe[28:32] = reolink holder and blocks
+- wireframe[12:27] = LiDAR and LiDAR holder
+- wireframe[00:11] = Create3 robot
+
+Robot statuses now appear in the UI, as of this [commit to main](https://github.com/MJPye/robot_with_webrtc/commit/aa07dcadd8a30ba2db811e2aea57f267f468c2eb).
+
+### Feedback on the buttons
+Have added feedback to the `Start Data` and `Start Video` buttons. 
+The first will glow green when the application loads and a data channel is not already open. When clicked, the button will stop glowing.
+
+The `Start Video` button glows when the data channel is open. I notice that clicking this immediately does nothing, seems like we need to wait for all the SLAM parts to start then we can `Start Video`. A better solution for the glowing button here might be to wait for the LiDAR status to be online.
+
+We also added text which says:
+- `Robot Visualisation Loading...` when the robot wireframe is loading.
+- `Camera Offline` when the camera stream is not available.
+
+All of these changes are in [this commit](https://github.com/MJPye/robot_with_webrtc/commit/7a1131fca507129b2b261b6caa0a5d2f32db1c6f).

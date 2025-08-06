@@ -24,6 +24,7 @@ export ROS_DISCOVERY_SERVER=<rpi_ip>:11811
 ```
 This works when used with FastDDS, however Vizanti does not work with this RMW implementation, so I needed to switch back to CycloneDDS
 
+Here is an example online that might work better: [FastDDS](https://lxrobotics.com/blog/fastdds-discovery-server/). The problem with Vizanti is to do with missing `ros-humble-rmw-fastrtps-dynamic-cpp` package.
 ### Fixing CycloneDDS
 The solution that worked for me in the end was to use the following setting in the `cyclonedds.xml` configuration file:
 ```
