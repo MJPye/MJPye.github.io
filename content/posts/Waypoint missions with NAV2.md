@@ -15,6 +15,16 @@ The more complex is [Behaviour-Tree Navigation](https://docs.nav2.org/configurat
 
 Oh well, can use Groot as an Editor but it no longer features live monitoring: [Github Issue](https://github.com/ros-navigation/navigation2/issues/3770). Even in newer versions of ROS2, live visualisation is an expensive Pro feature.
 
+When I tried to run nav2 with a config file it crashed and won't generate Costmaps: `ros2 launch nav2_bringup navigation_launch.py params_file:=/home/rpi/robot_configs/bt_groot.yaml`
+
+```
+bt_navigator:
+  ros__parameters:
+    enable_groot_monitoring: true
+    groot_zmq_publisher_port: 1666
+    groot_zmq_server_port: 1667
+```
+
 ### Anatomy of a Waypoint Mission
 So I'm thinking first we need to create a map of the apartment, then load that in. I guess if we assume we always start missions on the dock, then SLAM would also work, but for now a static map seems like a good idea. Still have costmaps for obstacle avoidance.
 
