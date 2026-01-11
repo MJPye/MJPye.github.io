@@ -157,3 +157,92 @@ When usb0 is down for too long, the create3 still has those strange multicasting
 Maybe can try with peers listed again, but I hate this.
 Can't assume usb0 will always be up, create3 could bomb out with multicast at any time it seems.
 
+
+### Adding Desktop Ubuntu - working solution is with Zenoh
+Changing the `cyclonedds.xml` on the `rpi` to include the following:
+```
+<NetworkInterface name="wlan0" priority="10"/>
+<NetworkInterface name="wlx1cbfce2684be" priority="10"/>
+<Peer address="192.168.0.75"/>   <!-- Ubuntu Desktop -->
+```
+
+I can communicate between the ubuntu desktop and Raspberry Pi, but no further. 
+My next attempt is to install a DDS router: https://eprosima-dds-router.readthedocs.io/en/latest/rst/developer_manual/installation/sources/linux.html
+Failing this I will try setting static peer addresses, disabling multicast, and adding iptable rules on the raspberry pi.
+
+Installing and building with `colcon build` at `/home/rpi/DDS-Router`.
+Seems to have built with colcon ok, so not is time to run.
+
+Was able to ping the create3 from the ubuntu PC like so, by changing on the RPI:
+```
+sudo iptables -A FORWARD -o usb0 -i wlx1cbfce2684be -j ACCEPT
+sudo iptables -A FORWARD -i usb0 -o wlx1cbfce2684be -j ACCEPT
+```
+and on the ubuntu PC, also change cyclonedds.xml:
+```
+sudo ip route add 192.168.186.2 via 192.168.0.197
+```
+
+You need to find a better way to diagnose these DDS issues.
+
+### Decisions
+We are using `cyclonedds` because we get much better performance from `Vizanti` when using `vizanti_rws.launch.py`.
+`cyclonedds` works with this version of `Vizanti`, the fast DDS package is not available: `rmw_fastrtps_dynamic_cpp`.
+First: is `rmw_fastrtps_dynamic_cpp` truly not an option?
+- Let's try setting this on the `rpi` and leaving the create 3 on fast
+- So I setup `fastrtps` on the create and `fastrtps_dynamic` on `rpi` and desktop, now I can see all topics.
+- However, now Vizanti is complaining that it cannot find `librwm_fastrtps_dynamic_cpp.so`. <- This was my fault for spelling `rmw` in `bashrc`.
+- **First actual issue is that the LiDAR data is not showing in Vizanti,** says there is no TF to `laser`.
+- Yeah struggling with missing data so going to flip back to cyclone and try again, but we could come back to this.
+- Example here with FastDDS and discovery server: https://github.com/iRobotEducation/create3_docs/issues/501#issuecomment-1884045286 also https://github.com/turtlebot/turtlebot4/issues/26
+- Somebody here mentions issue with TF and LiDAR: https://gist.github.com/roni-kreinin/8fbb20cb4603b8eb5e3961167fb22cd4?permalink_comment_id=4604737#gistcomment-4604737
+
+I simplified the `cyclonedds.xml` files removing a lot of Unicast parts and now we have:
+- Vizanti running again with TF fixed, we can see all the data.
+- So it is as before, however all the data that comes from the create 3 is not reachable from Ubuntu desktop.
+- Can see LiDAR and the `base link -> laser` transforms but these are generated on the `rpi`.
+
+First try some tweaks with `cyclonedds` again, then could try the `discovery server` with FastDDS.
+could try `spsd` again.
+
+Alternatively, try this `zenoh` bridge: https://github.com/eclipse-zenoh/zenoh-plugin-ros2dds
+
+### Zenoh
+Going to use this between `rpi` and ubuntu desktop.
+It's important to make sure that NO DDS communication can occur between 2 hosts that are bridged by `zenoh-bridge-ros2dds`. Otherwise, some duplicate or looping traffic can occur.
+**The guide says preferably**, enable MULTICAST on the loopback interface with this command (on Linux): `sudo ip l set lo multicast on` **But I have not done so and it works**.
+To make this permanent add this file: `/etc/NetworkManager/dispatcher.d/10-enable-lo-mcast`:
+```
+#!/bin/bash
+if [ "$DEVICE_IFACE" = "lo" ] && [ "$2" = "up" ]; then
+    /sbin/ip link set lo multicast on
+fi
+```
+And make it executable.
+
+
+#### Installing
+To install Zenoh:
+```
+gpg --keyserver hkps://keyserver.ubuntu.com --recv-keys 829768EDD9BD8B8F
+gpg --export 829768EDD9BD8B8F | gpg --dearmor | sudo tee /usr/share/keyrings/zenoh.gpg > /dev/null
+gpg --no-default-keyring --keyring /usr/share/keyrings/zenoh.gpg --list-keys
+```
+Then create `/etc/apt/sources.list.d/zenoh.list` with following contents:
+```
+deb [signed-by=/usr/share/keyrings/zenoh.gpg] https://download.eclipse.org/zenoh/debian-repo/ /
+```
+Now you can do `sudo apt update` and install with:
+```
+sudo apt install zenoh-bridge-ros2dds
+```
+
+#### Running
+To run, do this on the `rpi`:
+```
+zenoh-bridge-ros2dds
+```
+And on the Ubuntu machine:
+```
+zenoh-bridge-ros2dds -e tcp/192.168.0.197:7447
+```
