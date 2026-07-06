@@ -18,9 +18,19 @@ RSYNC_MD_OPTS=(
   --prune-empty-dirs
 )
 
+RSYNC_SO101_OPTS=(
+  -av
+  --delete
+  --exclude='non-blog/'
+  --include='*/'
+  --include='*.md'
+  --exclude='*'
+  --prune-empty-dirs
+)
+
 # Sync each vault into its own staging dir (--delete is safe here)
 rsync "${RSYNC_MD_OPTS[@]}" "$CREATE3" "$STAGING/create3/"
-rsync "${RSYNC_MD_OPTS[@]}" --exclude='non-blog/' "$SO101" "$STAGING/so101/"
+rsync "${RSYNC_SO101_OPTS[@]}" "$SO101" "$STAGING/so101/"
 
 # Merge both staging dirs, then sync to posts with --delete
 mkdir -p "$STAGING/combined"
