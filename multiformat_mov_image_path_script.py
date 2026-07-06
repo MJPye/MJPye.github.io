@@ -4,8 +4,19 @@ import shutil
 
 # Paths
 posts_dir = "/Users/matthewpye/Documents/blog/mjpye.github.io/content/posts/"
-attachments_dir = "/Users/matthewpye/Documents/Obsidian_Vault/Create 3 Robot/attachments/"
+attachments_dirs = [
+    "/Users/matthewpye/Documents/Obsidian_Vault/Create 3 Robot/attachments/",
+    "/Users/matthewpye/Documents/Obsidian_Vault/SO-101/attachments/",
+]
 static_images_dir = "/Users/matthewpye/Documents/blog/mjpye.github.io/static/images/"
+
+
+def find_attachment(media):
+    for attachments_dir in attachments_dirs:
+        full_path = os.path.join(attachments_dir, media)
+        if os.path.exists(full_path):
+            return full_path
+    return None
 
 # Supported media extensions
 image_extensions = ('.png', '.jpg', '.jpeg', '.gif', '.svg')
@@ -26,7 +37,7 @@ for filename in os.listdir(posts_dir):
         for media in media_files:
             ext = os.path.splitext(media)[1].lower()
             media_path = f"/images/{media.replace(' ', '%20')}"
-            full_source_path = os.path.join(attachments_dir, media)
+            full_source_path = find_attachment(media)
 
             if ext in video_extensions:
                 # Markdown HTML fallback for video (autoplay, muted, loop)
@@ -41,7 +52,7 @@ for filename in os.listdir(posts_dir):
             content = re.sub(rf'!?\[\[{re.escape(media)}\]\]', replacement, content)
 
             # Step 4: Copy the media file to the Hugo static/images directory if it exists
-            if os.path.exists(full_source_path):
+            if full_source_path:
                 shutil.copy(full_source_path, static_images_dir)
 
         # Step 5: Write the updated content back to the markdown file
