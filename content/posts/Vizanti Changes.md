@@ -1,6 +1,7 @@
 ---
 title: Making some visual changes to Vizanti
 date: 2024-11-18
+tags: ["MobileRobot"]
 ---
 The location to copy edited files for the webpage is here.
 ```

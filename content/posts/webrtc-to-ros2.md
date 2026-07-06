@@ -1,6 +1,7 @@
 ---
 title: WebRTC message conversion to ROS2
 date: 2025-08-05
+tags: ["MobileRobot"]
 ---
 ### What does this node do?
 Sometimes we want to send ROS2 actions or service calls over the WebRTC data channel from the UI and have them execute on the robot. This node handles that functionality using [rclnodejs](https://github.com/RobotWebTools/rclnodejs), the ROS 2 client library for Javascript.

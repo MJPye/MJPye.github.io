@@ -1,6 +1,7 @@
 ---
 title: OpenVPN setup on Raspberry Pi
 date: 2024-05-10
+tags: ["MobileRobot"]
 ---
 I first tried using [Husarnet](https://husarnet.com/) and opening a port on my router, but I found it was not stable (the router). Switched to using OpenVPN instead and had more success. Has been a while since I tried Husarnet though, likely worth revisiting.
 <!--more-->

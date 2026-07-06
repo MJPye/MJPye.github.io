@@ -1,6 +1,7 @@
 ---
 title: Fixing SSL with Vizanti, mostly rambling while trying to fix but ends in a solution
 date: 2025-02-08
+tags: ["MobileRobot"]
 ---
 We need to get SSL working again with Vizanti, which will allow the full page to work with HTTPS.
 <!--more-->

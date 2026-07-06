@@ -1,6 +1,7 @@
 ---
 title: Telegram bot for login and ban notifications
 date: 2025-02-26
+tags: ["MobileRobot"]
 ---
 Let's create a Telegram bot that sends a notification to my phone when there are multiple failed attempts to login, or when there is a successful login. Was more practical for me than email based notifications and cronjobs.
 

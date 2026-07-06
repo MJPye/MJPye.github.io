@@ -1,6 +1,7 @@
 ---
 title: CycloneDDS and Unicast - Solutions for missing ROS2 topics
 date: 2025-05-11
+tags: ["MobileRobot"]
 ---
 ### CycloneDDS and Unicast
 Had an ongoing issue with the robot where `ros2 topic list` shows only 2 topics, when I did `usb0` interface down then up it would sometimes help, sometimes not.

@@ -1,6 +1,7 @@
 ---
 title: Adding Fail2Ban to prevent brute force attempts
 date: 2025-01-30
+tags: ["MobileRobot"]
 ---
 Following the [guide here](https://www.digitalocean.com/community/tutorials/how-to-protect-an-nginx-server-with-fail2ban-on-ubuntu-20-04).
 

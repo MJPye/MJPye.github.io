@@ -1,6 +1,7 @@
 ---
 title: 3D Printing Robot Accessories
 date: 2025-05-04
+tags: ["MobileRobot"]
 ---
 In 2024 I bought a [Bambu Lab A1 mini](https://eu.store.bambulab.com/de/products/a1-mini-de?variant=53687077372252&srsltid=AfmBOopoGYvPMDh-c0Fb66Z2q_L9TDGdfamtqXGMOfNUWpJAezwZpcXF) for €200. It comes fully assembled and I have found it to be an amazing tool to have around, far better than the 3D printers that were available when I was at university in 2016.
 

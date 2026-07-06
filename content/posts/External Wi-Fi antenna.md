@@ -1,6 +1,7 @@
 ---
 title: Adding External Wi-Fi antenna to robot - or how to drive in the kitchen
 date: 2025-01-15
+tags: ["MobileRobot"]
 ---
 Github with installation instructions here [here](https://github.com/morrownr/8821cu-20210916), for this [product](https://thepihut.com/products/raspberry-pi-dual-band-5ghz-2-4ghz-usb-wifi-adapter-with-antenna).
 

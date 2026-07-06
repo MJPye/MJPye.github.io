@@ -1,6 +1,7 @@
 ---
 title: Waypoint missions with NAV2
 date: 2025-08-09
+tags: ["MobileRobot"]
 ---
 We have the robot UI working and can give single Pose Goals, now lets try to link different goals and actions together to make an autonomous mission.
 <!--more-->

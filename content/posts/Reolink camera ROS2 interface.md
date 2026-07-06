@@ -1,6 +1,7 @@
 ---
 title: Reolink camera ROS2 interface
 date: 2025-05-25
+tags: ["MobileRobot"]
 ---
 ## ROS2 interface
 There is a package which defines actions for a PTZ camera, so a generic interface which I should use. [ptz_action_server](https://github.com/clearpathrobotics/ptz_action_server/tree/ros2).

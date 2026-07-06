@@ -1,6 +1,7 @@
 ---
 title: First attempts with WebRTC, data channels working
 date: 2024-06-22
+tags: ["MobileRobot"]
 ---
 #### Basics
 WebRTC uses RTCPeerConnection to communicate streaming data between browsers, but also needs a mechanism to coordinate communication and to send control messages, a process known as signalling.

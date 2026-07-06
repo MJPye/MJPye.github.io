@@ -1,6 +1,7 @@
 ---
 title: Fixing Robot Model and TF - Rotated by 180 Degrees
 date: 2024-12-07
+tags: ["MobileRobot"]
 ---
 <!--more-->
 ```

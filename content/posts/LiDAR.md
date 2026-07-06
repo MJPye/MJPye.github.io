@@ -1,6 +1,7 @@
 ---
 title: LiDAR and Initial Vizanti setup
 date: 2024-08-28
+tags: ["MobileRobot"]
 ---
 Github repo for slamtech LiDARs: https://github.com/Slamtec/sllidar_ros2
 Link to purchase in Germany: https://eu.robotshop.com/de/products/rplidar-a1m8-360-grad-laserscanner-entwicklungskit 

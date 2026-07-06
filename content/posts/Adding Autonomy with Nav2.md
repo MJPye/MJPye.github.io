@@ -1,6 +1,7 @@
 ---
 title: Adding Autonomy with Nav2
 date: 2025-06-07
+tags: ["MobileRobot"]
 ---
 After making some hardware & software changes to the robot since the last time I used the Nav2 stack, I first need to make a couple quick fixes.
 

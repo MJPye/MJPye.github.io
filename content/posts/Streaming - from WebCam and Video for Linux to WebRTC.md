@@ -1,6 +1,7 @@
 ---
 title: Streaming - from WebCam and Video for Linux to WebRTC
 date: 2024-07-29
+tags: ["MobileRobot"]
 ---
 On this page I include the details on how to use `gst-launch` or `python` scripts to create `rtsp` streams. We then convert the `rtsp` streams to `WebRTC` using Go and pass them on to the client.
 Note Kurento was not used as it cannot run directly on the Raspberry Pi. In the future, with some intermediate server, we may return to Kurento, as it will handle multiple clients far easier.

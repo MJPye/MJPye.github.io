@@ -1,6 +1,7 @@
 ---
 title: Moving OpenVPN access server away from default port 443
 date: 2025-02-16
+tags: ["MobileRobot"]
 ---
 ### Moving OpenVPN to port 4443 and admin panel to 943
 So currently when a user wants to use the robot dashboard, they need to add port 8443. This is because the OpenVPN access server by default runs on port 443 which is default HTTPS port. Going to try and change the default VPN port so that my domain by default points to the robot dashboard.

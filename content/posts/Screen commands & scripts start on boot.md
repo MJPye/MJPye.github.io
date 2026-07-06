@@ -1,6 +1,7 @@
 ---
 title: Launching cameras, streams and controls on boot in screens
 date: 2024-11-16
+tags: ["MobileRobot"]
 ---
 ### Screen to view cameras and drive the robot around
 Currently have 5 screens that need to be run to make the robot work. Now want these to start at boot in the correct order.

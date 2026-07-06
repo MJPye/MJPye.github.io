@@ -1,6 +1,7 @@
 ---
 title: Robot sleep and wake states
 date: 2025-02-15
+tags: ["MobileRobot"]
 ---
 We need the following to run all the time:
 - Signalling Server

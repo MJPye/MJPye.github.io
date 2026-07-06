@@ -1,6 +1,7 @@
 ---
 title: Reolink camera streaming and Snapshots
 date: 2025-05-24
+tags: ["MobileRobot"]
 ---
 ### Setting up ETH0 interface between camera and RPi
 With the Reolink camera connected to my MacBook or over Wi-Fi, I found the streams had some latency. Going to try changing settings to see if we can improve this.

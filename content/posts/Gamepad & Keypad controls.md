@@ -1,6 +1,7 @@
 ---
 title: Gamepad and Keypad controls over WebRTC data channel
 date: 2024-07-21
+tags: ["MobileRobot"]
 ---
 ### teleop_twist_joy
 There is a config file setup for this, where we invert the left and right stick values to make the robot move in the correct direction. In summary, the values from the browser were opposite from what I wanted with gamepad controls, so this is equivalent to a setting of "invert horizontal and vertical".

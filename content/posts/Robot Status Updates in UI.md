@@ -1,6 +1,7 @@
 ---
 title: Bi-directional WebRTC data for Robot Status Updates
 date: 2025-06-14
+tags: ["MobileRobot"]
 ---
 I want to get robot status updates in the UI. First step is 2 way communication. Made a test using this [commit](https://github.com/MJPye/robot_with_webrtc/commit/31851b41609b6cc376fd9242b1da31ae42fad30f).
 ### Side note - creating a wireframe

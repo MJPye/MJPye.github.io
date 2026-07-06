@@ -1,6 +1,7 @@
 ---
 title: First Nav2 attempts & Transform Tolerance
 date: 2024-12-20
+tags: ["MobileRobot"]
 ---
 Started SLAM from systemd folder script.
 Went to `/opt/ros/humble/share/nav2_bringup/params` and made sure costmaps were generated using `scan_throttled`. Then ran with `ros2 launch nav2_bringup navigation_launch.py` from [here](https://docs.nav2.org/tutorials/docs/navigation2_with_slam.html).

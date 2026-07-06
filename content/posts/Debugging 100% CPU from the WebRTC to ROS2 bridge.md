@@ -1,6 +1,7 @@
 ---
 title: Debugging 100% CPU usage from the WebRTC to ROS2 bridge
 date: 2025-05-22
+tags: ["MobileRobot"]
 ---
 ### Issue with CPU usage spike
 ##### What is the issue?

@@ -1,6 +1,7 @@
 ---
 title: Setting up a new RPi4, manual steps which I should automate
 date: 2024-06-09
+tags: ["MobileRobot"]
 ---
 ### Manual steps
 Below are some manual steps to setup a new Raspberry Pi 4 for use with the create3 robot and created OpenVPN and AWS servers, I used these steps when updating from RPi3 to RPi4.

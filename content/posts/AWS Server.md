@@ -1,6 +1,7 @@
 ---
 title: AWS Server setup
 date: 2024-09-22
+tags: ["MobileRobot"]
 ---
 #### OpenVPN Access Server
 I have created a launch template from my running AWS OpenVPN Access Server.
