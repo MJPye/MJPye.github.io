@@ -4,7 +4,7 @@ I'm Matt, an engineer currently living in Berlin.
 
 For the last 5 years, I've worked in tech startups, mostly on Robotics, but also a lot of Linux and Automation/Infrastructure 🤖
 
-Find me on: [LinkedIn](https://www.linkedin.com/in/matthew-pye1/)
+Find me on: [LinkedIn](https://www.linkedin.com/in/matthew-pye1/) and [GitHub](https://github.com/MJPye)
 
 This blog shows the robotics projects I'm currently working on at home.
 
