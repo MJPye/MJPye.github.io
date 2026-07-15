@@ -158,14 +158,55 @@ lerobot-record  \
 
 With 60 episodes trained, the robot could successfully pick and place the cube when it was in grid locations 1-3, however 4-6 were problematic. The robot would often over-extend and miss the cube in grid sections 4-6, which were closer to the robot base. Any variance in the cube orientation in any grid location also caused failures in grasping. Out of distribution cube locations resulted in 100% grasping failure.
 
-**Add an example here showing failures modes with this policy**.
+Example failure:
+<video src="/images/Eval_V1_fail.mov" autoplay muted loop playsinline style="max-width:100%; height:auto;"></video>
 
-### Adding 30 more episodes, including rotations and changing how we did teleop to be smoother and loop at the cube more
+### Better Data and Image Transforms to counter lighting changes
+Up to this point, I had always collected my training episodes and tested inference using the trained policy in the evening. It wasn't until I tried to test my policy on a Saturday morning that I noticed, the robot performs very poorly when the **lighting conditions have changed**.
+As seen in the 2 example videos above, the colour of my workstation can shift from bright natural light to warm artificial light, depending on the time of day. 
+To counter this, `image_transforms` was enabled for the next training run, which would randomly alter the appearance of the input videos.
+```
+lerobot-train \
+...
+  --dataset.image_transforms.enable=true \
+  --dataset.image_transforms.tfs='{ ColorJitter: { type: ColorJitter, kwargs: { brightness: [0.7, 1.3], contrast: [0.7, 1.3], saturation: [0.6, 1.4], hue: [-0.1, 0.1] } } }'
+```
 
-### Training with image transforms to counter lighting changes.
+After looking back through my training episodes, I also noticed that to begin with, my Teleoperation was suboptimal. I moved the robot in a way that often let the target slip out of the cameras view, then moved in a jerky fashion back towards it. As such, I replaced earlier training episodes with **smoother Teleoperation**, which kept the Wrist Camera more focused on the target.
 
-### Upping episode count to 160 or so
+Finally, I added an additional batch of episodes where the **target cube was rotated**, which I hoped would allow the robot to pick up the cube no-matter it's pose. 
 
-### Adding 40 episodes with the lamp turned off to counter shadows
+This brought the total number of training episodes to 140.
+<video src="/images/Eval_v4_success.mov" autoplay muted loop playsinline style="max-width:100%; height:auto;"></video>
 
-### Add 50 more episodes where the container is in a different location each time, 25 lamp on and 25 lamp off
+Unfortunately when collecting training data, I did not consider the effect of a light source near the target object. There was a small lamp near the setup, which makes the cube cast a strong shadow around it. When the lamp is turned off, the robot struggles to grasp the cube. Example below:
+
+<video src="/images/Eval_v4_fail_no_lamp.mov" autoplay muted loop playsinline style="max-width:100%; height:auto;"></video>
+
+### Varying setup and removal of light source
+It seems the policy was using information from the shadow cast by the cube for grasping. This meant that when the lamp nearby was turned off, the grasping performance of the robot deteriorated.
+To fix this issue, I added 40 more episodes of training with the lamp turned off.
+
+At this point, I also decided to vary the position of the container, with the hope that the cube or container could be placed anywhere in the workspace. I added 50 more training episodes with random cube and container placement. Half with lamp on, half with lamp off.
+
+This brought the final training dataset to 210 episodes.
+
+<video src="/images/Eval_v5_success.mov" autoplay muted loop playsinline style="max-width:100%; height:auto;"></video>
+
+<video src="/images/Eval_v5_success_2.mov" autoplay muted loop playsinline style="max-width:100%; height:auto;"></video>
+
+<video src="/images/Eval_v5_success_v3.mov" autoplay muted loop playsinline style="max-width:100%; height:auto;"></video>
+
+
+### Still To Document:
+changes to the following based on available hardware.
+- temporal_ensemble_coeff: float | None = 0.01
+- n_action_steps: int = 100 to n_action_steps: int = 1
+
+Actually the above does give the best results, however GPU and CPU requirements change. 
+You change this in the config JSON in the pretrained model folder. Find the minimum which works well with the latest model: 
+- Power draw
+- GPU clock speed
+- VRAM usage
+- Per core CPU
+- Check for warnings about control loop in terminal
